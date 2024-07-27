@@ -1,1 +1,133 @@
+{% load static %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekart</title>
+    {% tailwind_css %}
+</head>
+<body class="font-body">
+    
+    <div>   <!-- content-wrapper -->
+        <header>
+            <nav class="flex justify-between items-center p-5 border-b-2 border-gray-200">
+                <div>
+                    <h1>
+                        <a href="/" class="font-bold text-primary text-2xl uppercase">Rekart</a>
+                    </h1>
+                </div>
 
+                <div class="hidden md:block">
+                    <ul class="flex gap-5 font-semibold black-text">
+                        <li>
+                            <a href="/" class="hover:font-bold">Home</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'shop:shop' %}" class="hover:font-bold">Shop</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:font-bold upp">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cart:cart_index' %}" class="hover:font-bold upp">Cart</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <ul class="hidden md:flex gap-2">
+
+                    {% if user.is_authenticated %}
+                        {% if user.customer.is_seller %}
+                            <div class="mr-2 relative inline-flex w-fit">
+                                <a href="{% url 'chat:inbox' %}">
+                                    <div class="absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 rounded-full bg-red-600 p-2.5 text-xs">
+
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z" />
+                                    </svg>
+                                </a>  
+                            </div>
+                            <li>
+                                <a href="#" onclick="openPopup()" class="btn text-xs btn-color hover-effect">Add item</a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="{% url 'logout' %}" class="btn text-xs btn-color hover-effect">Logout</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'signup' %}" class="btn text-xs btn-color hover-effect">Sign up</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'login' %}" class="btn text-xs btn-color hover-effect">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <div class="px-4 cursor-pointer md:hidden" id="burger">
+                    <svg class="w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>  
+                </div>
+
+            </nav>
+
+            <ul class="border-t-2 border-gray-300 text-lg text-center font-semibold black-text hidden md:hidden" id="phone-menu">
+                {% if user.is_authenticated %}
+                <li class="py-4">
+                    <a href="{% url 'logout' %}" class="hover:font-bold">Logout</a>
+                </li>
+                <li class="py-4">
+                    <a href="#" onclick="openPopup()" class="hover:font-bold">Add item</a>
+                </li>
+                {% else %}
+                <li class="py-4">
+                    <a href="{% url 'login' %}" class="hover:font-bold">Login</a>
+                </li>
+                <li class="py-4">
+                    <a href="{% url 'signup' %}" class="hover:font-bold">Sign up</a>
+                </li>
+                {% endif %}
+                <li class="py-4">
+                    <a href="/" class="hover:font-bold">Home</a>
+                </li>
+                <li class="py-4">
+                    <a href="shop.html" class="hover:font-bold">Shop</a>
+                </li>
+                <li class="py-4">
+                    <a href="#" class="hover:font-bold upp">Dashboard</a>
+                </li>
+                <li class="py-4">
+                    <a href="{% url 'cart:cart_index' %}" class="hover:font-bold upp">Cart</a>
+                </li>
+            </ul>
+        </header>
+        <div id="popup" class="popup">
+            <div class="flex justify-end mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 font-extrabold cursor-pointer hover:text-red-700" onclick="closePopup()">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>     
+            </div>
+            <p class="text-center mb-6">What would you like to add..?</p>
+            <div class="flex justify-center flex-wrap align-middle gap-8">
+                <a href="{% url 'shop:add_item' %}?type=product" class="px-4 py-2 bg-primary text-white rounded-md font-bold hover:bg-secondary">Recycled product</a>
+                <a href="{% url 'shop:add_item' %}?type=plastic" class="px-4 py-2 bg-primary text-white rounded-md font-bold hover:bg-secondary">Plastic waste</a>
+            </div>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <footer class="h-32 bg-gray-900 flex items-center justify-center text-gray-300 text-xs">
+            <p>
+                &#169; GROUP 7 CSA MEC
+            </p>
+    </footer>
+    <script src="{% static 'script/popup.js' %}" ></script>
+    <script src="{% static 'script/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
