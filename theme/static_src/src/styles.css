@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+.black-text{
+    @apply text-gray-700;
+}
+
+.hover-effect{
+    @apply transition ease-out duration-500 hover:bg-primary hover:text-white;
+}
+
+.btn-color{
+    @apply border-primary text-primary;
+}
+
+.btn{
+    @apply font-bold text-xs border-2 py-2 px-4 rounded-full uppercase cursor-pointer tracking-wider;
+}
+
+.popup{
+    @apply
+    w-96
+    absolute
+    top-0
+    left-1/2
+    transform
+    -translate-x-1/2
+    -translate-y-1/2
+    scale-p1
+    bg-gray-100
+    pb-7
+    pt-3
+    rounded-md
+    invisible
+    transition-all
+    duration-300
+    z-10;
+}
+
+.open-popup{
+    @apply
+    visible
+    transform
+    -translate-x-1/2
+    -translate-y-1/2
+    scale-100
+    top-1/2;
+}
+
+.gradient-background {
+    background: linear-gradient(290deg,#1f6b48,#128c37,#16a140);
+    background-size: 180% 180%;
+    animation: gradient-animation 18s ease infinite;
+  }
+  
+  @keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
